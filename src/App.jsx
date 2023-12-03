@@ -1,23 +1,30 @@
-import { useState,useEffect } from 'react'
+import { useState } from 'react'
 import './App.css';
-import { initializeFireBase } from './config/config';
-import { collection,getDocs  } from 'firebase/firestore/lite';
-
+import authConfig from './Firebase/auth';
 function App() {
-  const  {db} = initializeFireBase();
 
-  // const checkConnection = async () =>{
-  //   const connected =  collection(db,"test");
-  //   const getConnection = await getDocs(connected);
-  //   console.log(getConnection.docs)
-  // }
+  const loginDetails = [
+    {
+      email:"",
+      password:""
+    }
+  ]
+  const [SignUp,setSignUp] = useState(loginDetails);
+  const handleSignUp = async (e) =>{
+    e.preventDefault()
+    const user = await authConfig.createUser(SignUp);
+  }
 
-  // useEffect(()=>{
-  //   checkConnection()
-  // },[])
+  const handleSignIn = async (e) =>{
+    e.preventDefault()
+    await authConfig.userSignIn(SignUp).then((userData) => {
+      console.log(userData.user.uid)
+    })
+  }
   
   return (
     <>
+   
     </>
   )
 }
